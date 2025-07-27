@@ -354,14 +354,55 @@
         row.style.animation = 'fadeInUp 0.8s ease forwards';
       });
       
-      // Add click effect to rows
+      // Add click effect to eliminate engines
       rows.forEach(row => {
         row.addEventListener('click', function() {
-          this.style.animation = 'none';
-          this.offsetHeight; // Trigger reflow
-          this.style.animation = 'pulse 0.6s ease';
+          if (this.classList.contains('eliminated')) return;
+          
+          this.classList.add('exploding');
+          
+          // Create explosion particles
+          createExplosion(this);
+          
+          setTimeout(() => {
+            this.classList.remove('exploding');
+            this.classList.add('eliminated');
+            
+            // Replace content with "ELIMINATED!" message
+            const engineCell = this.querySelector('.engine-name');
+            const eloCell = this.querySelector('.elo-score');
+            
+            engineCell.innerHTML = '<span class="eliminated-text">💥 ELIMINATED! 💥</span>';
+            eloCell.innerHTML = '<span class="eliminated-score">REKT</span>';
+          }, 800);
         });
       });
+      
+      function createExplosion(row) {
+        const rect = row.getBoundingClientRect();
+        const particles = 15;
+        
+        for (let i = 0; i < particles; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'explosion-particle';
+          particle.style.left = (rect.left + rect.width / 2) + 'px';
+          particle.style.top = (rect.top + rect.height / 2) + 'px';
+          
+          const angle = (360 / particles) * i;
+          const velocity = 100 + Math.random() * 100;
+          const size = 4 + Math.random() * 8;
+          
+          particle.style.setProperty('--angle', angle + 'deg');
+          particle.style.setProperty('--velocity', velocity + 'px');
+          particle.style.setProperty('--size', size + 'px');
+          
+          document.body.appendChild(particle);
+          
+          setTimeout(() => {
+            particle.remove();
+          }, 1000);
+        }
+      }
     });
     
     // CSS animations for fade in
@@ -380,6 +421,82 @@
       
       tbody tr {
         opacity: 0;
+      }
+      
+      .exploding {
+        animation: explode 0.8s ease-out forwards !important;
+        z-index: 10;
+        position: relative;
+      }
+      
+      @keyframes explode {
+        0% { transform: scale(1) rotate(0deg); }
+        50% { 
+          transform: scale(1.3) rotate(10deg); 
+          background: radial-gradient(circle, #ff4444, #ff8800, #ffff00);
+          box-shadow: 0 0 50px rgba(255, 68, 68, 1);
+        }
+        100% { 
+          transform: scale(0.8) rotate(-5deg); 
+          background: rgba(100, 100, 100, 0.3);
+        }
+      }
+      
+      .eliminated {
+        background: rgba(100, 100, 100, 0.2) !important;
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      
+      .eliminated:hover {
+        transform: none !important;
+        box-shadow: none !important;
+      }
+      
+      .eliminated-text {
+        color: #ff4444 !important;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+        animation: eliminatedFlash 1.5s ease-in-out infinite alternate;
+      }
+      
+      .eliminated-score {
+        color: #666 !important;
+        font-weight: 700;
+        text-decoration: line-through;
+        opacity: 0.5;
+      }
+      
+      @keyframes eliminatedFlash {
+        from { text-shadow: 0 0 15px rgba(255, 68, 68, 0.8); }
+        to { text-shadow: 0 0 25px rgba(255, 68, 68, 1); }
+      }
+      
+      .explosion-particle {
+        position: fixed;
+        width: var(--size);
+        height: var(--size);
+        background: radial-gradient(circle, #ff4444, #ff8800, #ffff00);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1000;
+        animation: particleExplode 1s ease-out forwards;
+      }
+      
+      @keyframes particleExplode {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(
+            calc(cos(var(--angle)) * var(--velocity)), 
+            calc(sin(var(--angle)) * var(--velocity))
+          ) scale(0);
+          opacity: 0;
+        }
       }
     `;
     document.head.appendChild(style);
