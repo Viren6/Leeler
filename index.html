@@ -1,41 +1,388 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Leeler List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚠️ LEELER LIST ⚠️</title>
   <style>
-    body { font-family: monospace; padding: 2rem; background: #f9f9f9; }
-    table { border-collapse: collapse; }
-    th, td { border: 1px solid #333; padding: 6px 12px; }
-    th { background: #eee; }
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: auto;
+      position: relative;
+    }
+    
+    /* Animated background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 0, 50, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 20, 147, 0.05) 0%, transparent 50%);
+      animation: backgroundPulse 8s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+    
+    @keyframes backgroundPulse {
+      0% { opacity: 0.3; }
+      100% { opacity: 0.7; }
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    
+    .warning-icon {
+      font-size: 4rem;
+      color: #ff4444;
+      animation: pulse 2s infinite;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 4rem;
+      font-weight: 900;
+      background: linear-gradient(45deg, #ff4444, #ff6b6b, #ff8e53, #ff6b6b, #ff4444);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(255, 68, 68, 0.5);
+      margin-bottom: 1rem;
+      letter-spacing: 0.1em;
+    }
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: #ff8e53;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+    
+    .description {
+      font-size: 1rem;
+      color: #ccc;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    
+    .shame-badge {
+      display: inline-block;
+      background: rgba(255, 68, 68, 0.2);
+      border: 2px solid #ff4444;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { box-shadow: 0 0 10px rgba(255, 68, 68, 0.5); }
+      to { box-shadow: 0 0 20px rgba(255, 68, 68, 0.8); }
+    }
+    
+    .table-container {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 68, 68, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .table-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 68, 68, 0.1), transparent);
+      animation: scan 4s linear infinite;
+    }
+    
+    @keyframes scan {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Roboto Mono', monospace;
+      position: relative;
+      z-index: 2;
+    }
+    
+    th {
+      background: linear-gradient(135deg, #ff4444, #ff6b6b);
+      color: white;
+      padding: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: none;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    th::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #fff, transparent);
+      animation: headerScan 3s linear infinite;
+    }
+    
+    @keyframes headerScan {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    
+    td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid rgba(255, 68, 68, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    tr:nth-child(even) {
+      background: rgba(255, 68, 68, 0.05);
+    }
+    
+    tr:hover {
+      background: rgba(255, 68, 68, 0.1);
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+    }
+    
+    tr:hover td {
+      color: #ff8e53;
+      text-shadow: 0 0 10px rgba(255, 142, 83, 0.5);
+    }
+    
+    .engine-name {
+      font-weight: 700;
+      color: #fff;
+      position: relative;
+    }
+    
+    .elo-score {
+      font-weight: 400;
+      color: #ff8e53;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    
+    .rank {
+      font-size: 0.8rem;
+      color: #666;
+      margin-right: 0.5rem;
+    }
+    
+    /* Shame indicators */
+    .engine-name::after {
+      content: '⚠️';
+      margin-left: 0.5rem;
+      animation: bounce 1s ease-in-out infinite alternate;
+    }
+    
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-3px); }
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem;
+      border-top: 1px solid rgba(255, 68, 68, 0.3);
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    .footer a {
+      color: #ff6b6b;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer a:hover {
+      color: #ff4444;
+      text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      .container { padding: 1rem; }
+      .table-container { padding: 1rem; }
+      th, td { padding: 0.6rem 0.8rem; font-size: 0.9rem; }
+    }
+    
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(45deg, #ff4444, #ff6b6b);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    }
   </style>
 </head>
 <body>
-  <h1>Leeler List</h1>
-  <table>
-    <thead>
-      <tr><th>Engine Name</th><th>CCRL Blitz Elo</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Stockfish 17.1 64-bit</td><td>3790</td></tr>
-      <tr><td>Torch v2 64-bit</td><td>3763</td></tr>
-      <tr><td>Obsidian 16.0 64-bit</td><td>3749</td></tr>
-      <tr><td>Alexandria 8.0.0 64-bit</td><td>3729</td></tr>
-      <tr><td>Starzix 6.0 64-bit</td><td>3697</td></tr>
-      <tr><td>Quanticade Orion 2.0 64-bit</td><td>3684</td></tr>
-      <tr><td>Astra 6.0 64-bit</td><td>3680</td></tr>
-      <tr><td>Titan 1.1.0 64-bit</td><td>3659</td></tr>
-      <tr><td>Chess System Tal 2.00 EAS 64-bit</td><td>3657</td></tr>
-      <tr><td>Rebel 16.3 64-bit</td><td>3652</td></tr>
-      <tr><td>Clarity 7.2.0 64-bit</td><td>3649</td></tr>
-      <tr><td>Arasan 25.2 64-bit</td><td>3646</td></tr>
-      <tr><td>Cinder 0.2.0 64-bit</td><td>3638</td></tr>
-      <tr><td>Devre 6.0 64-bit</td><td>3624</td></tr>
-      <tr><td>Peacekeeper 3.01 64-bit</td><td>3620</td></tr>
-      <tr><td>Serendipity 1.0 64-bit</td><td>3557</td></tr>
-      <tr><td>Rice 8.0.0 64-bit</td><td>3534</td></tr>
-      <tr><td>BlackCore 6.0 64-bit</td><td>3448</td></tr>
-    </tbody>
-  </table>
+  <div class="container">
+    <header class="header">
+      <span class="warning-icon">⚠️</span>
+      <h1>LEELER LIST</h1>
+      <div class="subtitle">Hall of Shame</div>
+      <p class="description">
+        Chess engines that have been identified as using Leela data in their training or evaluation, 
+        compromising their originality and authenticity in the chess engine community.
+      </p>
+      <div class="shame-badge">🚫 Unoriginal Data Usage</div>
+    </header>
+    
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>🎯 Engine Name</th>
+            <th>📊 CCRL Blitz Elo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="engine-name"><span class="rank">#1</span>Stockfish 17.1 64-bit</td><td class="elo-score">3790</td></tr>
+          <tr><td class="engine-name"><span class="rank">#2</span>Torch v2 64-bit</td><td class="elo-score">3763</td></tr>
+          <tr><td class="engine-name"><span class="rank">#3</span>Obsidian 16.0 64-bit</td><td class="elo-score">3749</td></tr>
+          <tr><td class="engine-name"><span class="rank">#4</span>Alexandria 8.0.0 64-bit</td><td class="elo-score">3729</td></tr>
+          <tr><td class="engine-name"><span class="rank">#5</span>Starzix 6.0 64-bit</td><td class="elo-score">3697</td></tr>
+          <tr><td class="engine-name"><span class="rank">#6</span>Quanticade Orion 2.0 64-bit</td><td class="elo-score">3684</td></tr>
+          <tr><td class="engine-name"><span class="rank">#7</span>Astra 6.0 64-bit</td><td class="elo-score">3680</td></tr>
+          <tr><td class="engine-name"><span class="rank">#8</span>Titan 1.1.0 64-bit</td><td class="elo-score">3659</td></tr>
+          <tr><td class="engine-name"><span class="rank">#9</span>Chess System Tal 2.00 EAS 64-bit</td><td class="elo-score">3657</td></tr>
+          <tr><td class="engine-name"><span class="rank">#10</span>Rebel 16.3 64-bit</td><td class="elo-score">3652</td></tr>
+          <tr><td class="engine-name"><span class="rank">#11</span>Clarity 7.2.0 64-bit</td><td class="elo-score">3649</td></tr>
+          <tr><td class="engine-name"><span class="rank">#12</span>Arasan 25.2 64-bit</td><td class="elo-score">3646</td></tr>
+          <tr><td class="engine-name"><span class="rank">#13</span>Cinder 0.2.0 64-bit</td><td class="elo-score">3638</td></tr>
+          <tr><td class="engine-name"><span class="rank">#14</span>Devre 6.0 64-bit</td><td class="elo-score">3624</td></tr>
+          <tr><td class="engine-name"><span class="rank">#15</span>Peacekeeper 3.01 64-bit</td><td class="elo-score">3620</td></tr>
+          <tr><td class="engine-name"><span class="rank">#16</span>Serendipity 1.0 64-bit</td><td class="elo-score">3557</td></tr>
+          <tr><td class="engine-name"><span class="rank">#17</span>Rice 8.0.0 64-bit</td><td class="elo-score">3534</td></tr>
+          <tr><td class="engine-name"><span class="rank">#18</span>BlackCore 6.0 64-bit</td><td class="elo-score">3448</td></tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <footer class="footer">
+      <p>🔍 <strong>Data integrity matters in chess engine development</strong> 🔍</p>
+      <p>This list serves as a reminder that originality and transparency are crucial values in the chess programming community.</p>
+      <br>
+      <p><em>Updated regularly • Community-driven • For educational purposes</em></p>
+    </footer>
+  </div>
+  
+  <script>
+    // Add some interactive effects
+    document.addEventListener('DOMContentLoaded', function() {
+      const rows = document.querySelectorAll('tbody tr');
+      
+      rows.forEach((row, index) => {
+        row.style.animationDelay = `${index * 0.1}s`;
+        row.style.animation = 'fadeInUp 0.8s ease forwards';
+      });
+      
+      // Add click effect to rows
+      rows.forEach(row => {
+        row.addEventListener('click', function() {
+          this.style.animation = 'none';
+          this.offsetHeight; // Trigger reflow
+          this.style.animation = 'pulse 0.6s ease';
+        });
+      });
+    });
+    
+    // CSS animations for fade in
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      tbody tr {
+        opacity: 0;
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>
