@@ -1,995 +1,508 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>⚠️ LEELER LIST ⚠️</title>
-        <style>
-            @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;700&family=Inter:wght@300;400;600;700&family=Andada+Pro:ital,wght@0,400..840;1,400..840&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap");
-
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            body {
-                font-family: "Roboto Mono", monospace;
-                min-height: 100vh;
-                overflow-x: hidden;
-                position: relative;
-                transition: all 1s ease-in-out;
-            }
-
-            /* Shame mode styles */
-            body.shame-mode {
-                background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
-                color: #fff;
-            }
-
-            /* Peace mode styles */
-            body.peace-mode {
-                background: linear-gradient(135deg, #0f3b2f 0%, #1e5f47 25%, #2d7d5e 50%, #225144 75%, #184735 100%);
-                color: #f0fdf4;
-                font-family: "Inter", sans-serif;
-            }
-
-            /* Nim mode styles */
-            body.nim-mode {
-                background: #0c0c0c;
-                color: #f5f5f5;
-                font-family: "Libre Baskerville", serif;
-            }
-
-            /* Animated background pattern - Shame mode */
-            body.shame-mode::before {
-                content: "";
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-image:
-                    radial-gradient(circle at 20% 80%, rgba(255, 0, 50, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
-                    radial-gradient(circle at 40% 40%, rgba(255, 20, 147, 0.05) 0%, transparent 50%);
-                animation: backgroundPulse 8s ease-in-out infinite alternate;
-                z-index: -1;
-            }
-
-            /* Animated background pattern - Peace mode */
-            body.peace-mode::before {
-                content: "";
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-image:
-                    radial-gradient(circle at 30% 70%, rgba(46, 125, 94, 0.1) 0%, transparent 60%),
-                    radial-gradient(circle at 70% 30%, rgba(34, 139, 102, 0.08) 0%, transparent 60%),
-                    radial-gradient(circle at 50% 50%, rgba(52, 168, 83, 0.06) 0%, transparent 70%);
-                animation: peacefulPulse 12s ease-in-out infinite alternate;
-                z-index: -1;
-            }
-
-            /* Animated background pattern - Nim mode */
-            body.nim-mode::before {
-                content: "";
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-image:
-                    radial-gradient(ellipse 80% 80% at 50% -20%, rgba(255, 215, 0, 0.1), transparent),
-                    radial-gradient(ellipse 80% 80% at 10% 100%, rgba(243, 212, 0, 0.1), transparent),
-                    radial-gradient(ellipse 80% 80% at 90% 100%, rgba(255, 195, 0, 0.1), transparent);
-                animation: nimPulse 10s ease-in-out infinite alternate;
-                z-index: -1;
-            }
-
-            @keyframes backgroundPulse {
-                0% {
-                    opacity: 0.3;
-                }
-                100% {
-                    opacity: 0.7;
-                }
-            }
-            @keyframes peacefulPulse {
-                0% {
-                    opacity: 0.2;
-                }
-                100% {
-                    opacity: 0.5;
-                }
-            }
-            @keyframes nimPulse {
-                0% {
-                    opacity: 0.4;
-                    transform: scale(1);
-                }
-                100% {
-                    opacity: 0.8;
-                    transform: scale(1.05);
-                }
-            }
-
-            .container {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 2rem;
-                position: relative;
-                z-index: 1;
-                user-select: none;
-            }
-            .header {
-                text-align: center;
-                margin-bottom: 3rem;
-                position: relative;
-            }
-
-            /* Header icons */
-            .warning-icon {
-                font-size: 4rem;
-                display: block;
-                margin: 0 auto 1rem;
-                transition: all 1s ease;
-            }
-            .shame-mode .warning-icon {
-                color: #ff4444;
-                animation: pulse 2s infinite;
-            }
-            .peace-mode .warning-icon {
-                color: #34a853;
-                animation: gentleBob 3s ease-in-out infinite;
-                transform: rotate(0deg);
-            }
-            .nim-mode .warning-icon {
-                content: url("https://raw.githubusercontent.com/nim-lang/assets/db966422ab2d842c9698e15dbe4d829b779a5d25/Art/logo-crown.svg");
-                width: 80px;
-                height: 80px;
-                animation: nimGlow 3s infinite alternate;
-            }
-
-            @keyframes pulse {
-                0%,
-                100% {
-                    transform: scale(1);
-                }
-                50% {
-                    transform: scale(1.1);
-                }
-            }
-            @keyframes gentleBob {
-                0%,
-                100% {
-                    transform: translateY(0px) rotate(0deg);
-                }
-                50% {
-                    transform: translateY(-5px) rotate(5deg);
-                }
-            }
-            @keyframes nimGlow {
-                from {
-                    filter: drop-shadow(0 0 8px #f3d400);
-                }
-                to {
-                    filter: drop-shadow(0 0 20px #ffc300);
-                }
-            }
-
-            /* Titles */
-            h1 {
-                font-size: 4rem;
-                font-weight: 900;
-                margin-bottom: 1rem;
-                transition: all 1s ease;
-            }
-            .shame-mode h1 {
-                font-family: "Orbitron", monospace;
-                background: linear-gradient(45deg, #ff4444, #ff6b6b, #ff8e53, #ff6b6b, #ff4444);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                animation: gradientShift 3s ease-in-out infinite;
-                text-shadow: 0 0 30px rgba(255, 68, 68, 0.5);
-                letter-spacing: 0.1em;
-            }
-            .peace-mode h1 {
-                font-family: "Inter", sans-serif;
-                font-weight: 700;
-                background: linear-gradient(45deg, #34a853, #20bd5e, #52b585, #34a853);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                animation: peacefulGradient 6s ease-in-out infinite;
-                text-shadow: 0 0 20px rgba(52, 168, 83, 0.3);
-                letter-spacing: -0.02em;
-            }
-            .nim-mode h1 {
-                font-family: "Orbitron", monospace;
-                background: linear-gradient(45deg, #ffd700, #f3d400, #ffc300, #f3d400, #ffd700);
-                background-size: 300% 300%;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                animation: nimGradient 5s ease-in-out infinite;
-                text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
-                letter-spacing: 0.05em;
-            }
-
-            @keyframes gradientShift {
-                0%,
-                100% {
-                    background-position: 0% 50%;
-                }
-                50% {
-                    background-position: 100% 50%;
-                }
-            }
-            @keyframes peacefulGradient {
-                0%,
-                100% {
-                    background-position: 0% 50%;
-                }
-                50% {
-                    background-position: 100% 50%;
-                }
-            }
-            @keyframes nimGradient {
-                0%,
-                100% {
-                    background-position: 0% 50%;
-                }
-                50% {
-                    background-position: 100% 50%;
-                }
-            }
-
-            /* Subtitles and Descriptions */
-            .subtitle {
-                font-size: 1.2rem;
-                margin-bottom: 0.5rem;
-                transition: all 1s ease;
-            }
-            .shame-mode .subtitle {
-                color: #ff8e53;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.2em;
-            }
-            .peace-mode .subtitle {
-                color: #2e7d5e;
-                font-weight: 600;
-                text-transform: none;
-                letter-spacing: 0.05em;
-            }
-            .nim-mode .subtitle {
-                color: #f3d400;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.2em;
-            }
-            .description {
-                font-size: 1rem;
-                margin: 0 auto 2rem;
-                line-height: 1.6;
-                transition: all 1s ease;
-            }
-            .shame-mode .description {
-                color: #ccc;
-                max-width: 600px;
-                font-weight: 400;
-            }
-            .peace-mode .description {
-                color: #d1fae5;
-                max-width: 800px;
-                font-weight: 400;
-            }
-            .nim-mode .description {
-                color: #ddd;
-                max-width: 800px;
-                font-weight: 400;
-            }
-
-            /* Mode Badges */
-            .mode-badge {
-                display: inline-block;
-                padding: 0.5rem 1rem;
-                border-radius: 25px;
-                font-size: 0.9rem;
-                letter-spacing: 0.1em;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-            .shame-mode .mode-badge {
-                background: rgba(255, 68, 68, 0.2);
-                border: 2px solid #ff4444;
-                font-weight: 700;
-                text-transform: uppercase;
-                animation: glow 2s ease-in-out infinite alternate;
-            }
-            .shame-mode .mode-badge:hover {
-                background: rgba(255, 68, 68, 0.3);
-                transform: scale(1.05);
-            }
-            .peace-mode .mode-badge {
-                background: rgba(52, 168, 83, 0.2);
-                border: 2px solid #34a853;
-                font-weight: 600;
-                text-transform: none;
-                animation: peacefulGlow 3s ease-in-out infinite alternate;
-            }
-            .peace-mode .mode-badge:hover {
-                background: rgba(52, 168, 83, 0.3);
-                transform: scale(1.05);
-            }
-            .nim-mode .mode-badge {
-                background: rgba(255, 215, 0, 0.15);
-                border: 2px solid #f3d400;
-                font-weight: 700;
-                font-family: "Orbitron", monospace;
-                text-transform: uppercase;
-                animation: nimBadgeGlow 2.5s ease-in-out infinite alternate;
-            }
-            .nim-mode .mode-badge:hover {
-                background: rgba(255, 215, 0, 0.25);
-                transform: scale(1.05);
-            }
-
-            @keyframes glow {
-                from {
-                    box-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
-                }
-                to {
-                    box-shadow: 0 0 20px rgba(255, 68, 68, 0.8);
-                }
-            }
-            @keyframes peacefulGlow {
-                from {
-                    box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
-                }
-                to {
-                    box-shadow: 0 0 16px rgba(34, 197, 94, 0.6);
-                }
-            }
-            @keyframes nimBadgeGlow {
-                from {
-                    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-                }
-                to {
-                    box-shadow: 0 0 20px rgba(243, 212, 0, 0.7);
-                }
-            }
-
-            /* Content Containers */
-            .content-container {
-                backdrop-filter: blur(10px);
-                border-radius: 15px;
-                padding: 2rem;
-                position: relative;
-                overflow: hidden;
-                transition: all 1s ease;
-            }
-            .shame-mode .content-container {
-                background: rgba(0, 0, 0, 0.7);
-                box-shadow:
-                    0 8px 32px rgba(0, 0, 0, 0.5),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(255, 68, 68, 0.3);
-            }
-            .peace-mode .content-container {
-                background: rgba(15, 59, 47, 0.4);
-                box-shadow:
-                    0 8px 32px rgba(0, 0, 0, 0.2),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(52, 168, 83, 0.3);
-            }
-            .nim-mode .content-container {
-                background: rgba(18, 18, 18, 0.7);
-                box-shadow:
-                    0 8px 32px rgba(0, 0, 0, 0.6),
-                    inset 0 1px 0 rgba(255, 215, 0, 0.15);
-                border: 1px solid rgba(255, 215, 0, 0.4);
-            }
-
-            /* Scan Animations */
-            .content-container::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                animation-duration: 4s;
-                animation-timing-function: linear;
-                animation-iteration-count: infinite;
-            }
-            .shame-mode .content-container::before {
-                background: linear-gradient(90deg, transparent, rgba(255, 68, 68, 0.1), transparent);
-                animation-name: scan;
-            }
-            .peace-mode .content-container::before {
-                background: linear-gradient(90deg, transparent, rgba(52, 168, 83, 0.05), transparent);
-                animation-name: peacefulScan;
-                animation-duration: 8s;
-            }
-            .nim-mode .content-container::before {
-                background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
-                animation-name: nimScan;
-                animation-duration: 6s;
-            }
-
-            @keyframes scan {
-                0% {
-                    left: -100%;
-                }
-                100% {
-                    left: 100%;
-                }
-            }
-            @keyframes peacefulScan {
-                0% {
-                    left: -100%;
-                }
-                100% {
-                    left: 100%;
-                }
-            }
-            @keyframes nimScan {
-                0% {
-                    left: -100%;
-                }
-                100% {
-                    left: 100%;
-                }
-            }
-
-            /* Table styles */
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                position: relative;
-                z-index: 2;
-                transition: all 1s ease;
-            }
-            th {
-                padding: 1rem;
-                border: none;
-                position: relative;
-                font-size: 0.9rem;
-                color: white;
-            }
-            .shame-mode th {
-                background: linear-gradient(135deg, #ff4444, #ff6b6b);
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-            }
-            .peace-mode th {
-                background: linear-gradient(135deg, #34a853, #2e7d5e);
-                font-weight: 600;
-                text-transform: none;
-                letter-spacing: 0.02em;
-            }
-            td {
-                padding: 0.8rem 1rem;
-                transition: all 0.3s ease;
-                position: relative;
-            }
-            .shame-mode td {
-                border-bottom: 1px solid rgba(255, 68, 68, 0.2);
-            }
-            .shame-mode tr:nth-child(even) {
-                background: rgba(255, 68, 68, 0.05);
-            }
-            .shame-mode tr:hover {
-                background: rgba(255, 68, 68, 0.1);
-                transform: scale(1.02);
-                box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
-            }
-            .peace-mode td {
-                border-bottom: 1px solid rgba(52, 168, 83, 0.15);
-            }
-            .peace-mode tr:nth-child(even) {
-                background: rgba(52, 168, 83, 0.05);
-            }
-            .peace-mode tr:hover {
-                background: rgba(52, 168, 83, 0.1);
-                transform: scale(1.01);
-                box-shadow: 0 4px 15px rgba(52, 168, 83, 0.2);
-            }
-            .shame-mode .engine-name {
-                font-weight: 700;
-                color: #fff;
-                position: relative;
-            }
-
-            .shame-mode .engine-name::after {
-                content: "⚠️";
-                margin-left: 0.5rem;
-                animation: bounce 1s ease-in-out infinite alternate;
-            }
-
-            /* Peace mode engine names */
-            .peace-mode .engine-name {
-                font-weight: 600;
-                color: #f0fdf4;
-                position: relative;
-            }
-
-            .peace-mode .engine-name::after {
-                content: "🍀";
-                margin-left: 0.5rem;
-                animation: gentleWave 2s ease-in-out infinite alternate;
-            }
-
-            @keyframes bounce {
-                from {
-                    transform: translateY(0);
-                }
-                to {
-                    transform: translateY(-3px);
-                }
-            }
-            @keyframes gentleWave {
-                from {
-                    transform: translateY(0px) rotate(-2deg);
-                }
-                to {
-                    transform: translateY(-2px) rotate(2deg);
-                }
-            }
-
-            /* Shame mode elo scores */
-            .shame-mode .elo-score {
-                font-weight: 400;
-                color: #ff8e53;
-                text-align: center;
-                font-size: 1.1rem;
-            }
-
-            /* Peace mode elo scores */
-            .peace-mode .elo-score {
-                font-weight: 500;
-                color: #10b981;
-                text-align: center;
-                font-size: 1.05rem;
-            }
-
-            .rank {
-                font-size: 0.8rem;
-                margin-right: 0.5rem;
-                transition: color 1s ease;
-            }
-
-            .shame-mode .rank {
-                color: #666;
-            }
-
-            .peace-mode .rank {
-                color: #6ee7b7;
-            }
-
-            /* Nim Mode Content */
-            .nim-engine-container {
-                display: flex;
-                justify-content: center;
-                align-items: stretch;
-                gap: 2rem;
-                flex-wrap: wrap;
-            }
-            .nim-engine-card {
-                background: rgba(30, 30, 30, 0.5);
-                border: 1px solid rgba(255, 215, 0, 0.4);
-                border-radius: 15px;
-                padding: 2rem;
-                text-align: center;
-                flex: 1;
-                min-width: 300px;
-                max-width: 400px;
-                transition: all 0.4s ease;
-            }
-            .nim-engine-card:hover {
-                transform: translateY(-10px) scale(1.03);
-                background: rgba(40, 40, 40, 0.7);
-                border-color: #ffd700;
-                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
-            }
-            .nim-engine-card .engine-logo {
-                max-width: 100%;
-                height: 150px;
-                object-fit: contain;
-                margin-bottom: 1.5rem;
-                filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.5));
-                transition: transform 0.4s ease;
-            }
-            .nim-engine-card:hover .engine-logo {
-                transform: scale(1.1);
-            }
-            .nim-engine-card h3 {
-                font-family: "Orbitron", monospace;
-                font-size: 2rem;
-                color: #ffd700;
-                margin-bottom: 1rem;
-                text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            }
-            .nim-engine-card p {
-                font-family: "Roboto Mono", monospace;
-                color: #ccc;
-                font-size: 0.9rem;
-                line-height: 1.5;
-            }
-
-            /* Footer */
-            .footer {
-                text-align: center;
-                margin-top: 3rem;
-                padding: 2rem;
-                font-size: 0.9rem;
-                transition: all 1s ease;
-            }
-            .shame-mode .footer {
-                border-top: 1px solid rgba(255, 68, 68, 0.3);
-                color: #888;
-            }
-            .shame-mode .footer a {
-                color: #ff6b6b;
-            }
-            .peace-mode .footer {
-                border-top: 1px solid rgba(52, 168, 83, 0.2);
-                color: #c8e6c9;
-            }
-            .peace-mode .footer a {
-                color: #2e7d5e;
-            }
-            .nim-mode .footer {
-                border-top: 1px solid rgba(255, 215, 0, 0.3);
-                color: #aaa;
-            }
-            .nim-mode .footer strong {
-                color: #f3d400;
-            }
-
-            /* Responsive design */
-            @media (max-width: 768px) {
-                h1 {
-                    font-size: 2.5rem;
-                }
-                .container {
-                    padding: 1rem;
-                }
-                .content-container {
-                    padding: 1rem;
-                }
-                th,
-                td {
-                    padding: 0.6rem 0.8rem;
-                    font-size: 0.9rem;
-                }
-                .nim-engine-card {
-                    min-width: 100%;
-                }
-            }
-
-            /* Scrollbar styling */
-            ::-webkit-scrollbar {
-                width: 8px;
-                height: 8px;
-            }
-            .shame-mode ::-webkit-scrollbar-track {
-                background: rgba(0, 0, 0, 0.3);
-            }
-            .shame-mode ::-webkit-scrollbar-thumb {
-                background: linear-gradient(45deg, #ff4444, #ff6b6b);
-                border-radius: 4px;
-            }
-            .peace-mode ::-webkit-scrollbar-track {
-                background: rgba(15, 59, 47, 0.3);
-            }
-            .peace-mode ::-webkit-scrollbar-thumb {
-                background: linear-gradient(45deg, #34a853, #2e7d5e);
-                border-radius: 4px;
-            }
-            .nim-mode ::-webkit-scrollbar-track {
-                background: #1a1a1a;
-            }
-            .nim-mode ::-webkit-scrollbar-thumb {
-                background: linear-gradient(45deg, #f3d400, #ffd700);
-                border-radius: 4px;
-            }
-
-            /* Class for smooth text transitions */
-            .transition-text {
-                transition: opacity 0.4s ease-in-out;
-            }
-            .transition-text.fade-out {
-                opacity: 0;
-            }
-        </style>
-    </head>
-    <body class="shame-mode">
-        <div class="container">
-            <header class="header">
-                <span class="warning-icon transition-text">⚠️</span>
-                <h1 id="main-title" class="transition-text">LEELER LIST</h1>
-                <div class="subtitle transition-text" id="subtitle">Hall of Shame</div>
-                <p class="description transition-text" id="description">
-                    Chess engines that have been identified as using Leela data in their training or evaluation, compromising their originality and
-                    authenticity in the chess engine community.
-                </p>
-                <div class="mode-badge" id="mode-toggle" onclick="toggleMode()">🚫 Unoriginal Data Usage</div>
-            </header>
-
-            <div class="content-container" id="content-container">
-                <!-- Content is generated by JavaScript -->
-            </div>
-
-            <footer class="footer">
-                <p id="footer-main" class="transition-text">🔍 <strong>Data integrity matters in chess engine development</strong> 🔍</p>
-                <p id="footer-sub" class="transition-text">
-                    This list serves as a reminder that originality and transparency are crucial values in the chess programming community.
-                </p>
-                <br />
-                <p class="transition-text"><em>Updated regularly • Community-driven • For educational purposes</em></p>
-            </footer>
-        </div>
-
-        <script>
-            let modeIndex = 0; // 0: shame, 1: peace, 2: nim
-            let isTransitioning = false;
-
-            const shameContent = {
-                bodyClass: "shame-mode",
-                title: "LEELER LIST",
-                pageTitle: "⚠️ LEELER LIST ⚠️",
-                subtitle: "Hall of Shame",
-                description:
-                    "Chess engines that have been identified as using Leela data in their training or evaluation, compromising their originality and authenticity in the chess engine community.",
-                badge: "🚫 Unoriginal Data Usage",
-                icon: "⚠️",
-                footerMain: "🔍 <strong>Data integrity matters in chess engine development</strong> 🔍",
-                footerSub: "This list serves as a reminder that originality and transparency are crucial values in the chess programming community.",
-            };
-
-            const peaceContent = {
-                bodyClass: "peace-mode",
-                title: "CREATIVE USE OF LEELA DATA",
-                pageTitle: "🌱 Creative use of Leela Data 🌱",
-                subtitle: "Innovation in Different Forms",
-                description:
-                    "These chess engines represent diverse approaches to chess AI development. While they use Leela data as a foundation, they may focus on originality in areas like search innovations, novel training techniques, distillation experiments, and creative applications. In a world where the strongest engine is open source and sharing ideas is inevitable, true competition lies not in raw strength but in exploring new frontiers of chess AI research and making the technology more accessible and interesting for everyone.",
-                badge: "🌱 Embracing Innovation",
-                icon: "🌿",
-                footerMain: "🌱 <strong>Innovation takes many forms in chess AI development</strong> 🌱",
-                footerSub:
-                    "Fair competitiveness is complex when the best engine is open source. What matters is advancing the field through creative research, novel applications, and making chess AI more accessible to hobbyists and researchers alike.",
-            };
-
-            const nimContent = {
-                bodyClass: "nim-mode",
-                title: "NIM ENGINES ARE BEST!",
-                pageTitle: "👑 Nim Powered Engines 👑",
-                subtitle: "Peak Performance & Elegance",
-                description:
-                    "Nim is a statically typed, compiled systems programming language. It combines successful concepts from mature languages like Python, Ada and Modula. These engines leverage Nim's performance and expressive syntax to create powerful and efficient chess AI.",
-                badge: "👑 Nim Supremacy",
-                icon: "https://raw.githubusercontent.com/nim-lang/assets/db966422ab2d842c9698e15dbe4d829b779a5d25/Art/logo-crown.svg",
-                footerMain: "👑 <strong>Performance meets productivity with Nim.</strong> 👑",
-                footerSub: "A showcase of chess engines built with the powerful and elegant Nim programming language.",
-            };
-
-            const modes = [shameContent, peaceContent, nimContent];
-
-            const originalEngineData = [
-                { name: "Stockfish 17.1 64-bit", elo: "3790" },
-                { name: "Torch v2 64-bit", elo: "3763" },
-                { name: "Obsidian 16.0 64-bit", elo: "3749" },
-                { name: "Alexandria 8.0.0 64-bit", elo: "3729" },
-                { name: "Starzix 6.0 64-bit", elo: "3697" },
-                { name: "Quanticade Orion 2.0 64-bit", elo: "3684" },
-                { name: "Astra 6.0 64-bit", elo: "3680" },
-                { name: "Titan 1.1.0 64-bit", elo: "3659" },
-                { name: "Chess System Tal 2.00 EAS 64-bit", elo: "3657" },
-                { name: "Rebel 16.3 64-bit", elo: "3652" },
-                { name: "Clarity 7.2.0 64-bit", elo: "3649" },
-                { name: "Arasan 25.2 64-bit", elo: "3646" },
-                { name: "Cinder 0.2.0 64-bit", elo: "3638" },
-                { name: "Devre 6.0 64-bit", elo: "3624" },
-                { name: "Peacekeeper 3.01 64-bit", elo: "3620" },
-                { name: "Serendipity 1.0 64-bit", elo: "3557" },
-                { name: "Rice 8.0.0 64-bit", elo: "3534" },
-                { name: "Superultra 2.0 64-bit", elo: "3531" },
-                { name: "Bagatur 5.3 64-bit", elo: "3490" },
-                { name: "BlackCore 6.0 64-bit", elo: "3448" },
-            ];
-
-            function buildShameOrPeaceTable(mode) {
-                const isShame = mode === 0;
-                let tableHTML = `
-        <table>
-          <thead>
-            <tr>
-              <th>${isShame ? "🎯 Engine Name" : "🪷 Engine Name"}</th>
-              <th>${isShame ? "📊 CCRL Blitz Elo" : "🌟 CCRL Blitz Elo"}</th>
-            </tr>
-          </thead>
-          <tbody>`;
-
-                originalEngineData.forEach((engine, index) => {
-                    tableHTML += `
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚠️ LEELER LIST ⚠️</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;700&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 50%, #16213e 100%);
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: auto;
+      position: relative;
+    }
+    
+    /* Animated background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 0, 50, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 69, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(255, 20, 147, 0.05) 0%, transparent 50%);
+      animation: backgroundPulse 8s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+    
+    @keyframes backgroundPulse {
+      0% { opacity: 0.3; }
+      100% { opacity: 0.7; }
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+      user-select: none;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    
+    .warning-icon {
+      font-size: 4rem;
+      color: #ff4444;
+      animation: pulse 2s infinite;
+      display: block;
+      margin-bottom: 1rem;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 4rem;
+      font-weight: 900;
+      background: linear-gradient(45deg, #ff4444, #ff6b6b, #ff8e53, #ff6b6b, #ff4444);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 3s ease-in-out infinite;
+      text-shadow: 0 0 30px rgba(255, 68, 68, 0.5);
+      margin-bottom: 1rem;
+      letter-spacing: 0.1em;
+    }
+    
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    
+    .subtitle {
+      font-size: 1.2rem;
+      color: #ff8e53;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+    
+    .description {
+      font-size: 1rem;
+      color: #ccc;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    
+    .shame-badge {
+      display: inline-block;
+      background: rgba(255, 68, 68, 0.2);
+      border: 2px solid #ff4444;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { box-shadow: 0 0 10px rgba(255, 68, 68, 0.5); }
+      to { box-shadow: 0 0 20px rgba(255, 68, 68, 0.8); }
+    }
+    
+    .table-container {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 68, 68, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .table-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 68, 68, 0.1), transparent);
+      animation: scan 4s linear infinite;
+    }
+    
+    @keyframes scan {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Roboto Mono', monospace;
+      position: relative;
+      z-index: 2;
+    }
+    
+    th {
+      background: linear-gradient(135deg, #ff4444, #ff6b6b);
+      color: white;
+      padding: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: none;
+      position: relative;
+      font-size: 0.9rem;
+    }
+    
+    th::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #fff, transparent);
+      animation: headerScan 3s linear infinite;
+    }
+    
+    @keyframes headerScan {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    
+    td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid rgba(255, 68, 68, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    tr:nth-child(even) {
+      background: rgba(255, 68, 68, 0.05);
+    }
+    
+    tr:hover {
+      background: rgba(255, 68, 68, 0.1);
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+    }
+    
+    tr:hover td {
+      color: #ff8e53;
+      text-shadow: 0 0 10px rgba(255, 142, 83, 0.5);
+    }
+    
+    .engine-name {
+      font-weight: 700;
+      color: #fff;
+      position: relative;
+    }
+    
+    .elo-score {
+      font-weight: 400;
+      color: #ff8e53;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    
+    .rank {
+      font-size: 0.8rem;
+      color: #666;
+      margin-right: 0.5rem;
+    }
+    
+    /* Shame indicators */
+    .engine-name::after {
+      content: '⚠️';
+      margin-left: 0.5rem;
+      animation: bounce 1s ease-in-out infinite alternate;
+    }
+    
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-3px); }
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding: 2rem;
+      border-top: 1px solid rgba(255, 68, 68, 0.3);
+      color: #888;
+      font-size: 0.9rem;
+    }
+    
+    .footer a {
+      color: #ff6b6b;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer a:hover {
+      color: #ff4444;
+      text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      .container { padding: 1rem; }
+      .table-container { padding: 1rem; }
+      th, td { padding: 0.6rem 0.8rem; font-size: 0.9rem; }
+    }
+    
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(45deg, #ff4444, #ff6b6b);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <span class="warning-icon">⚠️</span>
+      <h1>LEELER LIST</h1>
+      <div class="subtitle">Hall of Shame</div>
+      <p class="description">
+        Chess engines that have been identified as using Leela data in their training or evaluation, 
+        compromising their originality and authenticity in the chess engine community.
+      </p>
+      <div class="shame-badge">🚫 Unoriginal Data Usage</div>
+    </header>
+    
+    <div class="table-container">
+      <table>
+        <thead>
           <tr>
-            <td class="engine-name"><span class="rank">#${index + 1}</span>${engine.name}</td>
-            <td class="elo-score">${engine.elo}</td>
-          </tr>`;
-                });
-
-                tableHTML += `</tbody></table>`;
-                return tableHTML;
-            }
-
-            function buildNimContent() {
-                return `
-        <div class="nim-engine-container">
-          <div class="nim-engine-card">
-            <img src="https://raw.githubusercontent.com/tsoj/Nalwald/master/res/logo.png" alt="Nalwald Logo" class="engine-logo">
-            <h3>Nalwald</h3>
-            <p>An original UCI chess engine with BAE written in Nim, focusing on clean code and performance, demonstrating the power of Nim for creating complex logic systems.</p>
-          </div>
-          <div class="nim-engine-card">
-            <img src="https://raw.githubusercontent.com/nocturn9x/heimdall/refs/heads/master/Heimdall_logo_v2.png" alt="Heimdall Logo" class="engine-logo">
-            <h3>Heimdall</h3>
-            <p>The most powerful among chess engines built with Nim, known for its strong playing style, efficient search algorithms, and only few remaining mega-bugs. A testament to Nim's capabilities in high-performance computing.</p>
-          </div>
-        </div>
-      `;
-            }
-
-            function updateContentContainer(mode) {
-                const container = document.getElementById("content-container");
-                container.style.opacity = 0;
-
-                setTimeout(() => {
-                    if (mode === 0 || mode === 1) {
-                        container.innerHTML = buildShameOrPeaceTable(mode);
-                        addTableEventListeners();
-                    } else if (mode === 2) {
-                        container.innerHTML = buildNimContent();
-                    }
-                    container.style.opacity = 1;
-                }, 500);
-            }
-
-            function toggleMode() {
-                if (isTransitioning) return;
-                isTransitioning = true;
-
-                // 1. Fade out all text content
-                const textElements = document.querySelectorAll(".transition-text");
-                textElements.forEach((el) => el.classList.add("fade-out"));
-
-                // Also fade out the badge separately
-                document.getElementById("mode-toggle").style.opacity = 0;
-
-                // 2. Wait for fade out to finish
-                setTimeout(() => {
-                    modeIndex = (modeIndex + 1) % modes.length;
-                    const content = modes[modeIndex];
-
-                    // 3. Change the body class to start the main transition
-                    document.body.className = content.bodyClass;
-
-                    // 4. Update all text content while it's invisible
-                    document.getElementById("main-title").textContent = content.title;
-                    document.getElementById("subtitle").textContent = content.subtitle;
-                    document.getElementById("description").textContent = content.description;
-                    document.getElementById("mode-toggle").textContent = content.badge;
-                    document.getElementById("footer-main").innerHTML = content.footerMain;
-                    document.getElementById("footer-sub").textContent = content.footerSub;
-                    document.title = content.pageTitle;
-
-                    // Update icon
-                    const iconEl = document.querySelector(".warning-icon");
-                    if (modeIndex === 2) {
-                        // Nim mode uses an image
-                        iconEl.innerHTML = "";
-                        iconEl.style.content = `url('${content.icon}')`;
-                    } else {
-                        iconEl.style.content = "none";
-                        iconEl.textContent = content.icon;
-                    }
-
-                    // 5. Update the main content block
-                    updateContentContainer(modeIndex);
-
-                    // 6. Fade the text content back in
-                    textElements.forEach((el) => el.classList.remove("fade-out"));
-                    document.getElementById("mode-toggle").style.opacity = 1;
-
-                    // 7. Allow another transition after this one is complete
-                    setTimeout(() => {
-                        isTransitioning = false;
-                    }, 500);
-                }, 500); // This timeout should be synced with the text fade transition time
-            }
-
-            function addTableEventListeners() {
-                const rows = document.querySelectorAll("tbody tr");
-
-                rows.forEach((row, index) => {
-                    row.style.animationDelay = `${index * 0.1}s`;
-                    row.style.animation = "fadeInUp 0.8s ease forwards";
-
-                    row.addEventListener("click", function () {
-                        if (!document.body.classList.contains("shame-mode")) return;
-                        if (this.classList.contains("eliminated")) return;
-
-                        this.classList.add("exploding");
-                        createExplosion(this);
-
-                        setTimeout(() => {
-                            this.classList.remove("exploding");
-                            this.classList.add("eliminated");
-
-                            this.querySelector(".engine-name").innerHTML = '<span class="eliminated-text">💥 ELIMINATED! 💥</span>';
-                            this.querySelector(".elo-score").innerHTML = '<span class="eliminated-score">REKT</span>';
-                        }, 800);
-                    });
-                });
-            }
-
-            function createExplosion(row) {
-                const rect = row.getBoundingClientRect();
-                for (let i = 0; i < 15; i++) {
-                    const particle = document.createElement("div");
-                    particle.className = "explosion-particle";
-                    document.body.appendChild(particle);
-
-                    particle.style.left = rect.left + rect.width / 2 + "px";
-                    particle.style.top = rect.top + rect.height / 2 + "px";
-
-                    const angle = Math.random() * 360;
-                    const velocity = 100 + Math.random() * 100;
-                    const size = 4 + Math.random() * 8;
-
-                    particle.style.setProperty("--angle", angle + "deg");
-                    particle.style.setProperty("--velocity", velocity + "px");
-                    particle.style.setProperty("--size", size + "px");
-
-                    setTimeout(() => particle.remove(), 1000);
-                }
-            }
-
-            document.addEventListener("DOMContentLoaded", function () {
-                updateContentContainer(modeIndex);
-                // Make badge transition smoother as well
-                const modeBadge = document.getElementById("mode-toggle");
-                modeBadge.style.transition = "opacity 0.4s ease-in-out";
-            });
-
-            const style = document.createElement("style");
-            style.textContent = `
-      #content-container { transition: opacity 0.5s ease-in-out; }
-      @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-      tbody tr { opacity: 0; }
-      .exploding { animation: explode 0.8s ease-out forwards !important; z-index: 10; position: relative; }
-      @keyframes explode {
-        50% { transform: scale(1.3) rotate(10deg); background: radial-gradient(circle, #ff4444, #ff8800, #ffff00); box-shadow: 0 0 50px rgba(255, 68, 68, 1); }
-        100% { transform: scale(0.8) rotate(-5deg); background: rgba(100, 100, 100, 0.3); }
+            <th>🎯 Engine Name</th>
+            <th>📊 CCRL Blitz Elo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="engine-name"><span class="rank">#1</span>Stockfish 17.1 64-bit</td><td class="elo-score">3790</td></tr>
+          <tr><td class="engine-name"><span class="rank">#2</span>Torch v2 64-bit</td><td class="elo-score">3763</td></tr>
+          <tr><td class="engine-name"><span class="rank">#3</span>Obsidian 16.0 64-bit</td><td class="elo-score">3749</td></tr>
+          <tr><td class="engine-name"><span class="rank">#4</span>Alexandria 8.0.0 64-bit</td><td class="elo-score">3729</td></tr>
+          <tr><td class="engine-name"><span class="rank">#5</span>Starzix 6.0 64-bit</td><td class="elo-score">3697</td></tr>
+          <tr><td class="engine-name"><span class="rank">#6</span>Quanticade Orion 2.0 64-bit</td><td class="elo-score">3684</td></tr>
+          <tr><td class="engine-name"><span class="rank">#7</span>Astra 6.0 64-bit</td><td class="elo-score">3680</td></tr>
+          <tr><td class="engine-name"><span class="rank">#8</span>Titan 1.1.0 64-bit</td><td class="elo-score">3659</td></tr>
+          <tr><td class="engine-name"><span class="rank">#9</span>Chess System Tal 2.00 EAS 64-bit</td><td class="elo-score">3657</td></tr>
+          <tr><td class="engine-name"><span class="rank">#10</span>Rebel 16.3 64-bit</td><td class="elo-score">3652</td></tr>
+          <tr><td class="engine-name"><span class="rank">#11</span>Clarity 7.2.0 64-bit</td><td class="elo-score">3649</td></tr>
+          <tr><td class="engine-name"><span class="rank">#12</span>Arasan 25.2 64-bit</td><td class="elo-score">3646</td></tr>
+          <tr><td class="engine-name"><span class="rank">#13</span>Cinder 0.2.0 64-bit</td><td class="elo-score">3638</td></tr>
+          <tr><td class="engine-name"><span class="rank">#14</span>Devre 6.0 64-bit</td><td class="elo-score">3624</td></tr>
+          <tr><td class="engine-name"><span class="rank">#15</span>Peacekeeper 3.01 64-bit</td><td class="elo-score">3620</td></tr>
+          <tr><td class="engine-name"><span class="rank">#16</span>Serendipity 1.0 64-bit</td><td class="elo-score">3557</td></tr>
+          <tr><td class="engine-name"><span class="rank">#17</span>Rice 8.0.0 64-bit</td><td class="elo-score">3534</td></tr>
+          <tr><td class="engine-name"><span class="rank">#18</span>Superultra 2.0 64-bit</td><td class="elo-score">3531</td></tr>		  
+          <tr><td class="engine-name"><span class="rank">#19</span>Bagatur 5.3 64-bit</td><td class="elo-score">3490</td></tr>		  
+          <tr><td class="engine-name"><span class="rank">#20</span>BlackCore 6.0 64-bit</td><td class="elo-score">3448</td></tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <footer class="footer">
+      <p>🔍 <strong>Data integrity matters in chess engine development</strong> 🔍</p>
+      <p>This list serves as a reminder that originality and transparency are crucial values in the chess programming community.</p>
+      <br>
+      <p><em>Updated regularly • Community-driven • For educational purposes</em></p>
+    </footer>
+  </div>
+  
+  <script>
+    // Add some interactive effects
+    document.addEventListener('DOMContentLoaded', function() {
+      const rows = document.querySelectorAll('tbody tr');
+      
+      rows.forEach((row, index) => {
+        row.style.animationDelay = `${index * 0.1}s`;
+        row.style.animation = 'fadeInUp 0.8s ease forwards';
+      });
+      
+      // Add click effect to eliminate engines
+      rows.forEach(row => {
+        row.addEventListener('click', function() {
+          if (this.classList.contains('eliminated')) return;
+          
+          this.classList.add('exploding');
+          
+          // Create explosion particles
+          createExplosion(this);
+          
+          setTimeout(() => {
+            this.classList.remove('exploding');
+            this.classList.add('eliminated');
+            
+            // Replace content with "ELIMINATED!" message
+            const engineCell = this.querySelector('.engine-name');
+            const eloCell = this.querySelector('.elo-score');
+            
+            engineCell.innerHTML = '<span class="eliminated-text">💥 ELIMINATED! 💥</span>';
+            eloCell.innerHTML = '<span class="eliminated-score">REKT</span>';
+          }, 800);
+        });
+      });
+      
+      function createExplosion(row) {
+        const rect = row.getBoundingClientRect();
+        const particles = 15;
+        
+        for (let i = 0; i < particles; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'explosion-particle';
+          particle.style.left = (rect.left + rect.width / 2) + 'px';
+          particle.style.top = (rect.top + rect.height / 2) + 'px';
+          
+          const angle = (360 / particles) * i;
+          const velocity = 100 + Math.random() * 100;
+          const size = 4 + Math.random() * 8;
+          
+          particle.style.setProperty('--angle', angle + 'deg');
+          particle.style.setProperty('--velocity', velocity + 'px');
+          particle.style.setProperty('--size', size + 'px');
+          
+          document.body.appendChild(particle);
+          
+          setTimeout(() => {
+            particle.remove();
+          }, 1000);
+        }
       }
-      .eliminated { background: rgba(100, 100, 100, 0.2) !important; opacity: 0.6; pointer-events: none; }
-      .eliminated:hover { transform: none !important; box-shadow: none !important; }
-      .eliminated-text { color: #ff4444 !important; font-weight: 900; text-transform: uppercase; letter-spacing: 0.1em; text-shadow: 0 0 15px rgba(255, 68, 68, 0.8); animation: eliminatedFlash 1.5s ease-in-out infinite alternate; }
-      .eliminated-score { color: #666 !important; font-weight: 700; text-decoration: line-through; opacity: 0.5; }
-      @keyframes eliminatedFlash { from { text-shadow: 0 0 15px rgba(255, 68, 68, 0.8); } to { text-shadow: 0 0 25px rgba(255, 68, 68, 1); } }
-      .explosion-particle { position: fixed; width: var(--size); height: var(--size); background: radial-gradient(circle, #ff4444, #ff8800, #ffff00); border-radius: 50%; pointer-events: none; z-index: 1000; animation: particleExplode 1s ease-out forwards; }
-      @keyframes particleExplode { 100% { transform: translate(calc(cos(var(--angle)) * var(--velocity)), calc(sin(var(--angle)) * var(--velocity))) scale(0); opacity: 0; } }
+    });
+    
+    // CSS animations for fade in
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      tbody tr {
+        opacity: 0;
+      }
+      
+      .exploding {
+        animation: explode 0.8s ease-out forwards !important;
+        z-index: 10;
+        position: relative;
+      }
+      
+      @keyframes explode {
+        0% { transform: scale(1) rotate(0deg); }
+        50% { 
+          transform: scale(1.3) rotate(10deg); 
+          background: radial-gradient(circle, #ff4444, #ff8800, #ffff00);
+          box-shadow: 0 0 50px rgba(255, 68, 68, 1);
+        }
+        100% { 
+          transform: scale(0.8) rotate(-5deg); 
+          background: rgba(100, 100, 100, 0.3);
+        }
+      }
+      
+      .eliminated {
+        background: rgba(100, 100, 100, 0.2) !important;
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      
+      .eliminated:hover {
+        transform: none !important;
+        box-shadow: none !important;
+      }
+      
+      .eliminated-text {
+        color: #ff4444 !important;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        text-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+        animation: eliminatedFlash 1.5s ease-in-out infinite alternate;
+      }
+      
+      .eliminated-score {
+        color: #666 !important;
+        font-weight: 700;
+        text-decoration: line-through;
+        opacity: 0.5;
+      }
+      
+      @keyframes eliminatedFlash {
+        from { text-shadow: 0 0 15px rgba(255, 68, 68, 0.8); }
+        to { text-shadow: 0 0 25px rgba(255, 68, 68, 1); }
+      }
+      
+      .explosion-particle {
+        position: fixed;
+        width: var(--size);
+        height: var(--size);
+        background: radial-gradient(circle, #ff4444, #ff8800, #ffff00);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1000;
+        animation: particleExplode 1s ease-out forwards;
+      }
+      
+      @keyframes particleExplode {
+        0% {
+          transform: translate(0, 0) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(
+            calc(cos(var(--angle)) * var(--velocity)), 
+            calc(sin(var(--angle)) * var(--velocity))
+          ) scale(0);
+          opacity: 0;
+        }
+      }
     `;
-            document.head.appendChild(style);
-        </script>
-    </body>
+    document.head.appendChild(style);
+  </script>
+</body>
 </html>
